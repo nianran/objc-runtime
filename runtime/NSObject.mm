@@ -289,7 +289,7 @@ objc_retain_autorelease(id obj)
     return objc_autorelease(objc_retain(obj));
 }
 
-
+// set一个strong的属性的时候会进入这个方法
 void
 objc_storeStrong(id *location, id obj)
 {
@@ -704,8 +704,11 @@ class AutoreleasePoolPage
     static size_t const COUNT = SIZE / sizeof(id);
 
     magic_t const magic;
+    // 下一个对象的存储地址
     id *next;
+    // 所在当前线程
     pthread_t const thread;
+    // 双向链表 父子节点
     AutoreleasePoolPage * const parent;
     AutoreleasePoolPage *child;
     uint32_t const depth;
@@ -734,6 +737,7 @@ class AutoreleasePoolPage
 #endif
     }
 
+    // 构造函数
     AutoreleasePoolPage(AutoreleasePoolPage *newParent) 
         : magic(), next(begin()), thread(pthread_self()),
           parent(newParent), child(nil), 
@@ -795,11 +799,13 @@ class AutoreleasePoolPage
 #endif
     }
 
-
+    // begin:存储其他对象的时候是叠加在当前实例之后的
+    // http://ww2.sinaimg.cn/mw690/51530583gw1elj5gvphtqj20dy0cx756.jpg
     id * begin() {
         return (id *) ((uint8_t *)this+sizeof(*this));
     }
 
+    // SIZE 一页大小最大为4096
     id * end() {
         return (id *) ((uint8_t *)this+SIZE);
     }
@@ -836,6 +842,7 @@ class AutoreleasePoolPage
         // Not recursive: we don't want to blow out the stack 
         // if a thread accumulates a stupendous amount of garbage
         
+        // stop前面设置的flag哨兵对象，指向Nil的指针
         while (this->next != stop) {
             // Restart from hotPage() every time, in case -release 
             // autoreleased more objects
@@ -972,12 +979,24 @@ class AutoreleasePoolPage
 
     static inline id *autoreleaseFast(id obj)
     {
-        AutoreleasePoolPage *page = hotPage();
+        // 线程安全的，找到当前页
+        // hotPage:以全局的key(static pthread_key_t const key = AUTORELEASE_POOL_KEY;)存储的一份实例，动态更新双向页链表中最后一个节点
+        // 都是同一个套路
+        //  1. 存在页 跳转3
+        //  2. 不存在页 创建页 跳转5
+        //  3. 页是否满了 跳转5
+        //  4. 添加obj 跳转6
+        //  5. 设置hotPage 跳转4
+        //  6. 结束
+        AutoreleasePoolPage *page = hotPage(); // 找到当前活跃的PoolPage
         if (page && !page->full()) {
+            // 存在页, 未满 -> 添加
             return page->add(obj);
         } else if (page) {
+            // 存在页, 已满 -> 新建后添加
             return autoreleaseFullPage(obj, page);
         } else {
+            // 不存在页 -> 新建页后添加
             return autoreleaseNoPage(obj);
         }
     }
@@ -1068,6 +1087,7 @@ public:
     }
 
 
+    // 其实Push的本质就是在页中加入哨兵对象
     static inline void *push() 
     {
         id *dest;
@@ -1075,7 +1095,7 @@ public:
             // Each autorelease pool starts on a new pool page.
             dest = autoreleaseNewPage(POOL_BOUNDARY);
         } else {
-            dest = autoreleaseFast(POOL_BOUNDARY);
+            dest = autoreleaseFast(POOL_BOUNDARY); // 快速创建autorelease的page
         }
         assert(dest == EMPTY_POOL_PLACEHOLDER || *dest == POOL_BOUNDARY);
         return dest;
@@ -1112,6 +1132,7 @@ public:
         id *stop;
 
         if (token == (void*)EMPTY_POOL_PLACEHOLDER) {
+            // 最外层main函数的
             // Popping the top-level placeholder pool.
             if (hotPage()) {
                 // Pool was used. Pop its contents normally.
@@ -1139,7 +1160,7 @@ public:
         }
 
         if (PrintPoolHiwat) printHiwat();
-
+        // 真正Release的时机
         page->releaseUntil(stop);
 
         // memory: delete empty children
@@ -1636,7 +1657,7 @@ objc_object::sidetable_clearDeallocating()
 
 
 #if __OBJC2__
-
+// 所有retain的入口
 __attribute__((aligned(16)))
 id 
 objc_retain(id obj)

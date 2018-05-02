@@ -436,11 +436,13 @@ inline id
 objc_object::retain()
 {
     assert(!isTaggedPointer());
-
+    // 简单来说就是有没有自己写retain来自定义内存管理
+    // FAST_HAS_DEFAULT_RR 这个字段标识类中是否包含有默认写的retain/release/autorelease/retainCount/_tryRetain/_isDeallocating/retainWeakReference/allowsWeakReference 方法
     if (fastpath(!ISA()->hasCustomRR())) {
+        // 没有就使用rootRetain
         return rootRetain();
     }
-
+    // 有的话，通过msgSend来调用
     return ((id(*)(objc_object *, SEL))objc_msgSend)(this, SEL_retain);
 }
 
@@ -469,6 +471,7 @@ objc_object::rootTryRetain()
 ALWAYS_INLINE id 
 objc_object::rootRetain(bool tryRetain, bool handleOverflow)
 {
+    // taggedPointer不需要Retain一个特殊的存在 retainCount好像是无限大
     if (isTaggedPointer()) return (id)this;
 
     bool sideTableLocked = false;
@@ -481,7 +484,9 @@ objc_object::rootRetain(bool tryRetain, bool handleOverflow)
         transcribeToSideTable = false;
         oldisa = LoadExclusive(&isa.bits);
         newisa = oldisa;
+        // nonpointer==1 指针优化
         if (slowpath(!newisa.nonpointer)) {
+            // 指针优化逻辑，taggetPoint
             ClearExclusive(&isa.bits);
             if (!tryRetain && sideTableLocked) sidetable_unlock();
             if (tryRetain) return sidetable_tryRetain() ? (id)this : nil;
@@ -493,7 +498,39 @@ objc_object::rootRetain(bool tryRetain, bool handleOverflow)
             if (!tryRetain && sideTableLocked) sidetable_unlock();
             return nil;
         }
+        // carry Flag
         uintptr_t carry;
+        // 先存储在extra_rc字段中
+        // carry标识超过了256之后会存储在其他地方 并且extra_rc减半 返回carry 为1
+        // 疑问？为什么会有两次同样的赋值操作？ 1464和1467？
+        /*
+         (uintptr_t) $1461 = 253
+         (uintptr_t) $1462 = 254
+         (uintptr_t) $1463 = 0
+         (uintptr_t) $1464 = 254
+         (uintptr_t) $1465 = 255
+         (uintptr_t) $1466 = 0
+         (uintptr_t) $1467 = 254
+         (uintptr_t) $1468 = 255
+         (uintptr_t) $1469 = 0
+         (uintptr_t) $1470 = 255
+         (uintptr_t) $1471 = 0
+         (uintptr_t) $1472 = 1
+         (uintptr_t) $1473 = 255
+         (uintptr_t) $1474 = 0
+         (uintptr_t) $1475 = 1
+         (uintptr_t) $1476 = 127
+         (uintptr_t) $1477 = 128
+         (uintptr_t) $1478 = 0
+         (uintptr_t) $1479 = 128
+         (uintptr_t) $1480 = 129
+         (uintptr_t) $1481 = 0
+         (uintptr_t) $1482 = 128
+         (uintptr_t) $1483 = 129
+         (uintptr_t) $1484 = 0
+         */
+        // 这个代码没找到源码，网址是别人的研究成果
+        // https://www.jianshu.com/p/18c3e88dfbf1
         newisa.bits = addc(newisa.bits, RC_ONE, 0, &carry);  // extra_rc++
 
         if (slowpath(carry)) {
@@ -714,8 +751,13 @@ objc_object::rootRetainCount()
     sidetable_lock();
     isa_t bits = LoadExclusive(&isa.bits);
     ClearExclusive(&isa.bits);
+    // 判断是否为普通对象
     if (bits.nonpointer) {
+        // extra_rc 存储的地址
+        // rc => Ref Count
         uintptr_t rc = 1 + bits.extra_rc;
+        //extra_rc 为unsigned long  32位：4位 最多127  64位：8位 最多255
+        // 比较有趣的是，这个extra_rc超过一定的值的时候就会去改变下面的这个值，进行分开缓存
         if (bits.has_sidetable_rc) {
             rc += sidetable_getExtraRC_nolock();
         }

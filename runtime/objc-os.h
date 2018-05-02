@@ -117,6 +117,10 @@ void vsyslog(int, const char *, va_list) UNAVAILABLE_ATTRIBUTE;
 #define ALWAYS_INLINE inline __attribute__((always_inline))
 #define NEVER_INLINE inline __attribute__((noinline))
 
+//https://blog.csdn.net/shuimuniao/article/details/8017971
+//#define LIKELY(x) __builtin_expect(!!(x), 1) //x很可能为真
+//#define UNLIKELY(x) __builtin_expect(!!(x), 0) //x很可能为假
+
 #define fastpath(x) (__builtin_expect(bool(x), 1))
 #define slowpath(x) (__builtin_expect(bool(x), 0))
 

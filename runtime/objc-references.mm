@@ -274,30 +274,43 @@ void _object_set_associative_reference(id object, void *key, id value, uintptr_t
     id new_value = value ? acquireValue(value, policy) : nil;
     {
         AssociationsManager manager;
+        // 由于map是用static修饰的，所以这边拿到的是唯一实例
         AssociationsHashMap &associations(manager.associations());
+        // ‘~’ 按位取反 获得唯一数字
         disguised_ptr_t disguised_object = DISGUISE(object);
         if (new_value) {
             // break any existing association.
             AssociationsHashMap::iterator i = associations.find(disguised_object);
             if (i != associations.end()) {
                 // secondary table exists
+                // obj 在map列表里面找到了
                 ObjectAssociationMap *refs = i->second;
                 ObjectAssociationMap::iterator j = refs->find(key);
                 if (j != refs->end()) {
+                    // key 在列表里面找到
+                    // 复制旧对象
                     old_association = j->second;
+                    // 替换表表中对象
                     j->second = ObjcAssociation(policy, new_value);
                 } else {
+                    // key 没有找到
+                    // 插入表
                     (*refs)[key] = ObjcAssociation(policy, new_value);
                 }
             } else {
                 // create the new association (first time).
+                // obj 没有在map里面找到对应的表，新建一个
                 ObjectAssociationMap *refs = new ObjectAssociationMap;
+                // 创建一个关联的表
                 associations[disguised_object] = refs;
                 (*refs)[key] = ObjcAssociation(policy, new_value);
+                // 设置还有关联的标识
                 object->setHasAssociatedObjects();
             }
         } else {
             // setting the association to nil breaks the association.
+            // 如果value为空，则去除表中内容
+            // note:这表没有重置标识符
             AssociationsHashMap::iterator i = associations.find(disguised_object);
             if (i !=  associations.end()) {
                 ObjectAssociationMap *refs = i->second;
