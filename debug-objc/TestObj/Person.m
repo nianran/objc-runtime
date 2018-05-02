@@ -26,6 +26,14 @@
 -(void)sayHello{
     NSLog(@"!!!");
 }
+- (Person *)person {
+    Person *person = [[Person alloc] init];
+    return person;
+}
+
+- (void)person1 {
+    Person *person = [[Person alloc] init];
+}
 
 @end
 

@@ -68,7 +68,7 @@ void add_class_to_loadable_list(Class cls)
     method = cls->getLoadMethod();
     if (!method) return;  // Don't bother if cls has no +load method
     
-    if (PrintLoading) {
+    if (PrintLoading) { // 加载的环境变量，打印对应的Log信息
         _objc_inform("LOAD: class '%s' scheduled for +load", 
                      cls->nameForLogging());
     }
@@ -195,6 +195,7 @@ static void call_class_loads(void)
     // Call all +loads for the detached list.
     for (i = 0; i < used; i++) {
         Class cls = classes[i].cls;
+        // 这里的Method本质是IMP
         load_method_t load_method = (load_method_t)classes[i].method;
         if (!cls) continue; 
 

@@ -1031,10 +1031,10 @@
 			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
-				fr,
-				de,
-				en,
-				ja,
+				English,
+				Japanese,
+				French,
+				German,
 				Base,
 			);
 			mainGroup = 08FB7794FE84155DC02AAC07 /* objc */;
