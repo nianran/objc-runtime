@@ -13,4 +13,7 @@
     NSLog(@"load1");
 }
 
+- (void)test1 {}
+
+
 @end

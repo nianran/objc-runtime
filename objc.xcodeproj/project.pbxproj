@@ -807,15 +807,15 @@
 			isa = PBXGroup;
 			children = (
 				9BED74522099A09300A49150 /* NSObject+Test1.m */,
-				9BED74532099A09300A49150 /* Person.h */,
-				9BED74542099A09300A49150 /* NSObject+Test3.h */,
 				9BED74552099A09300A49150 /* NSObject+Test2.m */,
-				9BED74562099A09300A49150 /* RetainCount.h */,
-				9BED74572099A09300A49150 /* NSObject+Test3.m */,
+				9BED74532099A09300A49150 /* Person.h */,
 				9BED74582099A09300A49150 /* Person.m */,
+				9BED74542099A09300A49150 /* NSObject+Test3.h */,
+				9BED74572099A09300A49150 /* NSObject+Test3.m */,
+				9BED74562099A09300A49150 /* RetainCount.h */,
+				9BED745B2099A09300A49150 /* RetainCount.m */,
 				9BED74592099A09300A49150 /* NSObject+Test1.h */,
 				9BED745A2099A09300A49150 /* NSObject+Test2.h */,
-				9BED745B2099A09300A49150 /* RetainCount.m */,
 			);
 			path = TestObj;
 			sourceTree = "<group>";

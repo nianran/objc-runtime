@@ -9,14 +9,20 @@
 #import "Person.h"
 #import "objc/runtime.h"
 
+typedef NS_ENUM(NSUInteger, RetainCountEnum) {
+    RetainCountEnumA,
+    RetainCountEnumB,
+    RetainCountEnumC,
+};
+
 @interface RetainCount(){
     int count;
 }
-
-
 @property (nonatomic, strong) NSMutableArray *objArray;
 @property (nonatomic, strong) Person *strongObj;
-//@property (nonatomic, weak) NSObject *weakObj;
+@property (nonatomic, weak, nullable) NSObject *weakObj;
+@property (nonatomic, assign) RetainCountEnum emun;
+@property (nonatomic, unsafe_unretained) NSObject *unsafeObj;
 
 @end
 
@@ -50,6 +56,10 @@
     char str[2];
     sprintf(str,"%d",count);
     objc_setAssociatedObject(self, str, self.strongObj, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)setWeakableObj {
+    self.weakObj = [[NSObject alloc] init];
 }
 
 - (NSString *)description {

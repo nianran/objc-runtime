@@ -398,6 +398,7 @@ weak_register_no_lock(weak_table_t *weak_table, id referent_id,
 
     // ensure that the referenced object is viable
     bool deallocating;
+    // 不存在自定义释放方法
     if (!referent->ISA()->hasCustomRR()) {
         deallocating = referent->rootIsDeallocating();
     }

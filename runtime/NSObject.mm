@@ -95,6 +95,8 @@ struct SideTable {
     weak_table_t weak_table;
 
     SideTable() {
+        // memset(结构体/数组名 , 用于替换的ASCII码对应字符 , 前n个字符 );
+        // 在一段内存块中填充某一个给定的值，常用于较大的对结构体和数组的清零操作。
         memset(&weak_table, 0, sizeof(weak_table));
     }
 
@@ -266,8 +268,9 @@ enum CrashIfDeallocating {
 template <HaveOld haveOld, HaveNew haveNew,
           CrashIfDeallocating crashIfDeallocating>
 static id 
-storeWeak(id *location, objc_object *newObj)
+storeWeak(id *location, objc_object *newObj) // location 对象指针地址，newObj存储z地址
 {
+    // haveOld 和 haveNew不能同时为false
     assert(haveOld  ||  haveNew);
     if (!haveNew) assert(newObj == nil);
 
@@ -311,7 +314,7 @@ storeWeak(id *location, objc_object *newObj)
             class_initialize(cls, (id)newObj);
 
             // If this class is finished with +initialize then we're good.
-            // If this class is still running +initialize on this thread 
+            
             // (i.e. +initialize called storeWeak on an instance of itself)
             // then we may proceed but it will appear initializing and 
             // not yet initialized to the check above.
@@ -912,7 +915,7 @@ class AutoreleasePoolPage
         return result;
     }
 
-    static inline void setHotPage(AutoreleasePoolPage *page) 
+    static inline void setHotPage(AutoreleasePoolPage *page)
     {
         if (page) page->fastcheck();
         tls_set_direct(key, (void *)page);

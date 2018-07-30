@@ -17,8 +17,21 @@ int main(int argc, const char * argv[]) {
         // 只是往其中塞了push操作只是往其中放了一个哨兵对象
         // void *context = objc_autoreleasePoolPush();
     @autoreleasepool {
+        typedef void (^blk_t)(id);
+        blk_t blk;
+        {
+            id array = [[NSMutableArray alloc] init];
+            blk = ^(id obj){
+                [array addObject:obj];
+                NSLog(@"array count: = %zd",[array count]);
+            };
+        }
+        
+        blk([[NSObject alloc] init]);
+        blk([[NSObject alloc] init]);
         Person *person = [[Person alloc] init];
         [person performSelector:@selector(sayHello)];
+        person.string7 = @"";
 
         NSLog(@"%@",[Person performSelector:@selector(species)]);
         NSString *string = [NSString new];
@@ -33,6 +46,9 @@ int main(int argc, const char * argv[]) {
                 
             }
         });
+        
+        
+        NSMapTable *mapTable = [NSMapTable weakToStrongObjectsMapTable];
         
 
         
