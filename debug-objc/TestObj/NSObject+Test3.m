@@ -9,4 +9,7 @@
 
 @implementation NSObject (Test3)
 
+- (void)test3 {}
+
+
 @end

@@ -241,7 +241,7 @@ static bool call_category_loads(void)
         load_method_t load_method = (load_method_t)cats[i].method;
         Class cls;
         if (!cat) continue;
-
+        //TO DO: cls 为空没有加载是什么情况？
         cls = _category_getClass(cat);
         if (cls  &&  cls->isLoadable()) {
             if (PrintLoading) {

@@ -16,10 +16,15 @@
 @property (nonatomic, copy) NSString *string4;
 @property (nonatomic, unsafe_unretained) NSString *string5;
 @property (nonatomic) NSString *string6;
+@property (nonatomic, weak) NSString *string7;
 
 
 @property (nonatomic) NSInteger int1;
 @property (nonatomic) char achar;
+
+
+@property (nonatomic, strong) NSString *strongString;
+@property (nonatomic, weak) NSString *weakString;
 
 
 

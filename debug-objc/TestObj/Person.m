@@ -8,12 +8,26 @@
 
 #import "Person.h"
 
-@interface Person ()
+@interface Person() {
+    @private
+    NSString *privateString;
+}
+
+@property (class, nonatomic, strong) NSString *classString;
+@property (nonatomic, strong) NSString *extsionString;
 
 
 @end
 
 @implementation Person
+
+- (instancetype)init {
+    if (self = [super init]) {
+        self.strongString = @"kfjahsdjfhkajshdfhksjhdfkjsahdfhkjshkfjshdjfkhskjhfkajshfsdfhkjh";
+        self.weakString = self.strongString;
+    }
+    return self;
+}
 
 + (void)load {
     
@@ -33,6 +47,10 @@
 
 - (void)person1 {
     Person *person = [[Person alloc] init];
+}
+
+- (void)person2 {
+    __weak Person *person = [[Person alloc] init];
 }
 
 @end

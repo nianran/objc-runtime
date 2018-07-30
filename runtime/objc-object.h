@@ -486,7 +486,7 @@ objc_object::rootRetain(bool tryRetain, bool handleOverflow)
         newisa = oldisa;
         // nonpointer==1 指针优化
         if (slowpath(!newisa.nonpointer)) {
-            // 指针优化逻辑，taggetPoint
+            // 指针优化逻辑，taggedPoint
             ClearExclusive(&isa.bits);
             if (!tryRetain && sideTableLocked) sidetable_unlock();
             if (tryRetain) return sidetable_tryRetain() ? (id)this : nil;
@@ -539,7 +539,7 @@ objc_object::rootRetain(bool tryRetain, bool handleOverflow)
                 ClearExclusive(&isa.bits);
                 return rootRetain_overflow(tryRetain);
             }
-            // Leave half of the retain counts inline and 
+            // Leave half of the retain counts inline and ·1
             // prepare to copy the other half to the side table.
             if (!tryRetain && !sideTableLocked) sidetable_lock();
             sideTableLocked = true;
@@ -616,6 +616,9 @@ objc_object::rootRelease(bool performDealloc, bool handleUnderflow)
             return sidetable_release(performDealloc);
         }
         // don't check newisa.fast_rr; we already called any RR overrides
+        // 先去减去extra_rc中的数量
+        // 如果extra_rc本身就为0，carry = 1
+        // 去从sideTable中进行减去
         uintptr_t carry;
         newisa.bits = subc(newisa.bits, RC_ONE, 0, &carry);  // extra_rc--
         if (slowpath(carry)) {
@@ -661,6 +664,7 @@ objc_object::rootRelease(bool performDealloc, bool handleUnderflow)
             // Side table retain count decreased.
             // Try to add them to the inline count.
             newisa.extra_rc = borrowed - 1;  // redo the original decrement too
+            // 将取出的extra_rc重新赋值
             bool stored = StoreReleaseExclusive(&isa.bits, 
                                                 oldisa.bits, newisa.bits);
             if (!stored) {
