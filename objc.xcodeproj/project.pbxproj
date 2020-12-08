@@ -389,6 +389,26 @@
 		83F550DF155E030800E95D3B /* objc-cache-old.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "objc-cache-old.mm"; path = "runtime/objc-cache-old.mm"; sourceTree = "<group>"; };
 		87BB4E900EC39633005D08E1 /* objc-probes.d */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.dtrace; name = "objc-probes.d"; path = "runtime/objc-probes.d"; sourceTree = "<group>"; };
 		9672F7ED14D5F488007CEC96 /* NSObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NSObject.mm; path = runtime/NSObject.mm; sourceTree = "<group>"; };
+		9B2DA79F224CAA2800B28B47 /* NSObject+Test1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Test1.m"; sourceTree = "<group>"; };
+		9B2DA7A0224CAA2800B28B47 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
+		9B2DA7A1224CAA2800B28B47 /* NSObject+Test3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Test3.h"; sourceTree = "<group>"; };
+		9B2DA7A2224CAA2800B28B47 /* NSObject+Test2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Test2.m"; sourceTree = "<group>"; };
+		9B2DA7A3224CAA2800B28B47 /* RetainCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetainCount.h; sourceTree = "<group>"; };
+		9B2DA7A4224CAA2800B28B47 /* NSObject+Test3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Test3.m"; sourceTree = "<group>"; };
+		9B2DA7A5224CAA2800B28B47 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
+		9B2DA7A6224CAA2800B28B47 /* NSObject+Test1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Test1.h"; sourceTree = "<group>"; };
+		9B2DA7A7224CAA2800B28B47 /* NSObject+Test2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Test2.h"; sourceTree = "<group>"; };
+		9B2DA7A8224CAA2800B28B47 /* RetainCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetainCount.m; sourceTree = "<group>"; };
+		9BED74522099A09300A49150 /* NSObject+Test1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Test1.m"; sourceTree = "<group>"; };
+		9BED74532099A09300A49150 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
+		9BED74542099A09300A49150 /* NSObject+Test3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Test3.h"; sourceTree = "<group>"; };
+		9BED74552099A09300A49150 /* NSObject+Test2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Test2.m"; sourceTree = "<group>"; };
+		9BED74562099A09300A49150 /* RetainCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetainCount.h; sourceTree = "<group>"; };
+		9BED74572099A09300A49150 /* NSObject+Test3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Test3.m"; sourceTree = "<group>"; };
+		9BED74582099A09300A49150 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
+		9BED74592099A09300A49150 /* NSObject+Test1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Test1.h"; sourceTree = "<group>"; };
+		9BED745A2099A09300A49150 /* NSObject+Test2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Test2.h"; sourceTree = "<group>"; };
+		9BED745B2099A09300A49150 /* RetainCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetainCount.m; sourceTree = "<group>"; };
 		BC8B5D1212D3D48100C78A5B /* libauto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libauto.dylib; path = /usr/lib/libauto.dylib; sourceTree = "<absolute>"; };
 		9B2DA79F224CAA2800B28B47 /* NSObject+Test1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Test1.m"; sourceTree = "<group>"; };
 		9B2DA7A0224CAA2800B28B47 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
@@ -803,6 +823,40 @@
 			name = "Project Headers";
 			sourceTree = "<group>";
 		};
+		9B2DA79E224CAA2800B28B47 /* TestObj */ = {
+			isa = PBXGroup;
+			children = (
+				9B2DA79F224CAA2800B28B47 /* NSObject+Test1.m */,
+				9B2DA7A0224CAA2800B28B47 /* Person.h */,
+				9B2DA7A1224CAA2800B28B47 /* NSObject+Test3.h */,
+				9B2DA7A2224CAA2800B28B47 /* NSObject+Test2.m */,
+				9B2DA7A3224CAA2800B28B47 /* RetainCount.h */,
+				9B2DA7A4224CAA2800B28B47 /* NSObject+Test3.m */,
+				9B2DA7A5224CAA2800B28B47 /* Person.m */,
+				9B2DA7A6224CAA2800B28B47 /* NSObject+Test1.h */,
+				9B2DA7A7224CAA2800B28B47 /* NSObject+Test2.h */,
+				9B2DA7A8224CAA2800B28B47 /* RetainCount.m */,
+			);
+			path = TestObj;
+			sourceTree = "<group>";
+		};
+		9BED74512099A09300A49150 /* TestObj */ = {
+			isa = PBXGroup;
+			children = (
+				9BED74522099A09300A49150 /* NSObject+Test1.m */,
+				9BED74552099A09300A49150 /* NSObject+Test2.m */,
+				9BED74532099A09300A49150 /* Person.h */,
+				9BED74582099A09300A49150 /* Person.m */,
+				9BED74542099A09300A49150 /* NSObject+Test3.h */,
+				9BED74572099A09300A49150 /* NSObject+Test3.m */,
+				9BED74562099A09300A49150 /* RetainCount.h */,
+				9BED745B2099A09300A49150 /* RetainCount.m */,
+				9BED74592099A09300A49150 /* NSObject+Test1.h */,
+				9BED745A2099A09300A49150 /* NSObject+Test2.h */,
+			);
+			path = TestObj;
+			sourceTree = "<group>";
+		};
 		F9BCC72A205C6A1600DD9AFC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1045,11 +1099,6 @@
 					30466D8321B665A500DA7B9D = {
 						CreatedOnToolsVersion = 11.3;
 						DevelopmentTeam = 8F3KT864KL;
-						ProvisioningStyle = Automatic;
-					};
-					834F9B01212E560100F95A54 = {
-						CreatedOnToolsVersion = 10.0;
-						DevelopmentTeam = 59GAB85EFG;
 						ProvisioningStyle = Automatic;
 					};
 					837F67A81A771F63004D34FA = {
